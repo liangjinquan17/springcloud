@@ -1,0 +1,35 @@
+server:
+ port: 8300
+
+spring:
+  application:
+    # Dubbo 应用名称
+    name: gateway
+  main:
+    # Spring Boot 2.1 需要设定
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      # Nacos 服务发现与注册配置
+      discovery:
+        server-addr: 192.168.1.223:8848
+    #gateway:
+    #  routes:
+    #    - id: after_route
+    #      uri: https://example.org
+    #      predicates:
+    #        - After=2027-01-20T17:42:47.789-07:00[America/Denver]
+    #      #- Weight=group1, 8
+    #    - id: after_route2
+    #      uri: https://www.baidu.com
+    #      predicates:
+    #        - After=2027-01-20T17:42:47.789-07:00[America/Denver]
+    #      #- Weight=group1, 8
+    #    - id: add_request_header_route
+    #      uri: http://localhost:8080
+    #      predicates:
+    #        - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+    #      filters:
+    #        - AddRequestHeader=name, shenfanapu
+##        - RedirectTo=301, http://localhost:8080/hello4
+
