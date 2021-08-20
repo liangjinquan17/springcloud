@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  gateway_admin:
+    ports:
+      - "8181:8181"
+    image: '192.168.1.128:5000/gateway-admin:latest'
+    env_file:
+      - server.env
+    environment:
+      TZ: Asia/Shanghai
+    entrypoint: "java -jar -Xmx512m /root/app.jar"

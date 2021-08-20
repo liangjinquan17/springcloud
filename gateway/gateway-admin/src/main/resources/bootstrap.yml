@@ -1,0 +1,14 @@
+server:
+  port: ${ORGANIZATION_PORT:8181}
+spring:
+  application:
+    name: gateway-admin
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${REGISTER_HOST:}:${REGISTER_PORT:}
+        namespace: ${REGISTER_NAMESPACE:}
+      config:
+        server-addr: ${REGISTER_HOST:}:${REGISTER_PORT:}
+        namespace: ${REGISTER_NAMESPACE:}
+        file-extension: yml

@@ -1,0 +1,14 @@
+server:
+  port: ${ORGANIZATION_PORT:8183}
+spring:
+  application:
+    name: authorization
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${REGISTER_HOST:}:${REGISTER_PORT:}
+        namespace: ${REGISTER_NAMESPACE:}
+      config:
+        server-addr: ${REGISTER_HOST:}:${REGISTER_PORT:}
+        namespace: ${REGISTER_NAMESPACE:}
+        file-extension: yml

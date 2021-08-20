@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springcloud.start.sentinel.dao.SentinelDegradeRuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.springcloud.start.sentinel.entity.po.SentinelDegradeRule">
+        <id column="id" property="id" />
+        <result column="project_name" property="projectName" />
+        <result column="resource" property="resource" />
+        <result column="count" property="count" />
+        <result column="grade" property="grade" />
+        <result column="time_window" property="timeWindow" />
+        <result column="min_request_amount" property="minRequestAmount" />
+        <result column="stat_interval_ms" property="statIntervalMs" />
+        <result column="slow_ratio_threshold" property="slowRatioThreshold" />
+        <result column="status" property="status" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="created_by" property="createdBy" />
+        <result column="updated_by" property="updatedBy" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, project_name, resource, count, grade, time_window, min_request_amount, stat_interval_ms, slow_ratio_threshold, status, created_time, updated_time, created_by, updated_by
+    </sql>
+    
+    <select id="queryByProjectName" resultMap="BaseResultMap" >
+		select <include refid="Base_Column_List"></include> from sentinel_degrade_rule where project_name = #{projectName} and status = 1
+	</select>
+	
+	<select id="batchQueryByProjectNames" resultMap="BaseResultMap" >
+		select <include refid="Base_Column_List"></include> from sentinel_degrade_rule where status = 1 and project_name in
+		<foreach item="item" collection="projectNames" separator="," open="(" close=")" index="">
+			#{item}
+        </foreach>
+	</select>
+</mapper>

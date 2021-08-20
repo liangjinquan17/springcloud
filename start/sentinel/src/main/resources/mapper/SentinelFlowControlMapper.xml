@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springcloud.start.sentinel.dao.SentinelFlowControlMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.springcloud.start.sentinel.entity.po.SentinelFlowControl">
+        <id column="id" property="id" />
+        <result column="project_name" property="projectName" />
+        <result column="resource" property="resource" />
+        <result column="count" property="count" />
+        <result column="grade" property="grade" />
+        <result column="limitApp" property="limitapp" />
+        <result column="strategy" property="strategy" />
+        <result column="controlBehavior" property="controlbehavior" />
+        <result column="status" property="status" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="created_by" property="createdBy" />
+        <result column="updated_by" property="updatedBy" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, project_name, resource, count, grade, limitApp, strategy, controlBehavior, status, created_time, updated_time, created_by, updated_by
+    </sql>
+
+	<select id="queryByProjectName" resultMap="BaseResultMap" >
+		select <include refid="Base_Column_List"></include> from sentinel_flow_control where project_name = #{projectName} and status = 1
+	</select>
+</mapper>

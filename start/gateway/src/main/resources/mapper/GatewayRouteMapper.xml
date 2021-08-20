@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springcloud.start.gateway.dao.GatewayRouteMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.springcloud.start.gateway.entity.po.GatewayRoute">
+        <id column="id" property="id" />
+        <result column="route_id" property="routeId" />
+        <result column="uri" property="uri" />
+        <result column="predicate" property="predicate" />
+        <result column="filters" property="filters" />
+        <result column="status" property="status" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, route_id, uri, predicate, filters, status, create_by, create_time, update_by, update_time
+    </sql>
+
+	<select id="getAll" resultMap="BaseResultMap" >
+		select <include refid="Base_Column_List"></include> from sys_gateway_route
+	</select>
+</mapper>

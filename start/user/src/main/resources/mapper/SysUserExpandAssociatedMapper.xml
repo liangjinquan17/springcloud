@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springcloud.start.user.dao.SysUserExpandAssociatedMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.springcloud.start.user.entity.po.SysUserExpandAssociated">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="expand" property="expand" />
+        <result column="application" property="application" />
+        <result column="status" property="status" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="created_by" property="createdBy" />
+        <result column="updated_by" property="updatedBy" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, expand, application, status, created_time, updated_time, created_by, updated_by
+    </sql>
+    <select id="getByUserId" resultType="com.springcloud.start.user.entity.po.SysUserExpandAssociated">
+        select <include refid="Base_Column_List"></include> from sys_user_expand_associated where user_id = #{userId}
+    </select>
+
+</mapper>

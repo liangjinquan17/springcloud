@@ -1,0 +1,112 @@
+pipeline {
+    agent {
+        node {label 'linuxnode'}
+    }
+
+    tools {
+        maven "maven3.6.3-liangjinquan-node"
+        jdk "jdk11-liangjinquan-node"
+    }
+
+    parameters {
+        string(name: 'projectName', defaultValue: 'springcloudDemo', description: '项目名称')
+        string(name: 'dockerRegistry', defaultValue:'192.168.1.98:5000', description: 'docker仓库地址')
+		gitParameter(branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'branch', type: 'PT_BRANCH')
+		choice( description: '', name: 'project', choices: ['organization', 'authorization', 'gateway-admin', 'gateway-web'])
+        choice( description: '', name: 'server', choices: ['root@192.168.1.98'])
+        booleanParam(name: 'buildCommnon', defaultValue: false, description: '是否需要编译公共包')
+	}
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+               git branch: "${params.branch}", credentialsId:'ef7d0abb-6e4b-476a-905d-69a9873525e5', url:'https://gitee.com/ljq123/springcloud_demo.git'
+                 echo "${params.branch}"
+            }
+        }
+        stage('Build common'){
+            steps{
+                script {
+                    if (params.buildCommnon) {
+                        // 如果有maven仓库，这一步可以换成新增一条流水线，专门打包上传到maven仓库
+                        sh 'mvn clean install -U -X -Dmaven.test-skip=true -f core/pom.xml'
+                        sh 'mvn clean install -U -X -Dmaven.test-skip=true -f auth/authorization-remote/pom.xml'
+                        sh 'mvn clean install -U -X -Dmaven.test-skip=true -f sysadmin/organization-remote/pom.xml'
+                        sh 'mvn clean install -U -X -Dmaven.test-skip=true -f start/user/pom.xml'
+                        sh 'mvn clean install -U -X -Dmaven.test-skip=true -f start/sentinel/pom.xml'
+                        sh 'mvn clean install -U -X -Dmaven.test-skip=true -f start/gateway/pom.xml'
+                    }
+                }
+            }
+        }
+        stage('Test'){
+            steps{
+                echo '预留测试位置'
+            }
+        }
+        stage('Build pecified project'){
+            steps{
+                script {
+                    def projectUrl = "";
+                    if(params.project == 'organization'){
+                        projectUrl = 'sysadmin/' + params.project;
+                    }else if(params.project == 'gateway-admin' || params.project == 'gateway-web'){
+                        projectUrl = 'gateway/' + params.project;
+                    }else if(params.project == 'authorization'){
+                        projectUrl = 'auth/' + params.project;
+                    }
+                    sh "mvn clean package -U -X -Dmaven.test.skip=true -f ${projectUrl}/pom.xml"
+                }
+            }
+        }
+
+        stage('Build docker'){
+            steps{
+                script {
+                    def projectUrl = "";
+                    if(params.project == 'organization'){
+                        projectUrl = 'sysadmin/'+params.project;
+                    }else if(params.project == 'gateway-admin' || params.project == 'gateway-web'){
+                        projectUrl = 'gateway/'+params.project;
+                    }else if(params.project == 'authorization'){
+                        projectUrl = 'auth/' + params.project;
+                    }
+                    sh "docker --version"
+                    sh "docker build -f ${projectUrl}/src/main/docker/Dockerfile -t ${dockerRegistry}/${params.project}:latest ${projectUrl}/target/"
+                }
+            }
+        }
+
+        stage('Push docker'){
+            steps{
+              sh "docker push ${dockerRegistry}/${params.project}:latest"
+              sh "docker rmi ${dockerRegistry}/${params.project}:latest"
+            }
+        }
+
+        stage('Start program'){
+            steps{
+                script {
+                    def projectUrl = "";
+                    def dir = "/data/"+projectName;
+                    if(params.project == 'organization'){
+                        projectUrl = 'sysadmin/'+params.project;
+                    }else if(params.project == 'gateway-admin' || params.project == 'gateway-web'){
+                        projectUrl = 'gateway/'+params.project;
+                    }else if(params.project == 'authorization'){
+                        projectUrl = 'auth/' + params.project;
+                    }
+                    // 创建文件目录和日志目录
+                    sh "ssh ${params.server} \" if [ ! -e ${dir}/${params.project} ]; then mkdir -p ${dir}/${params.project} ; fi\""
+                    // 发送docker-compose配置文件和环境变量
+                    sh "scp ${projectUrl}/src/main/docker/docker-compose.yml ${projectUrl}/src/main/docker/server.env ${params.server}:${dir}/${params.project}/ "
+                    sh "ssh ${params.server} \" docker-compose -f ${dir}/${params.project}/docker-compose.yml down \""
+                    sh "ssh ${params.server} \"echo \$(docker images | grep ${dockerRegistry}/${params.project}:latest) \""
+                    sh "ssh ${params.server} \" if [ \"\$(docker images | grep ${dockerRegistry}/${params.project}:latest)\" ]; then docker rmi ${dockerRegistry}/${params.project}:latest; fi; \""
+                    sh "ssh ${params.server} \" docker-compose -f ${dir}/${params.project}/docker-compose.yml up -d \""
+                }
+            }
+        }
+    }
+}

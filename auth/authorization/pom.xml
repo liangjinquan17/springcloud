@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.6</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.springcloud.auth</groupId>
+	<artifactId>authorization</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>authorization</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>11</java.version>
+	</properties>
+	<dependencies>
+		<!-- 综合服务 -->
+		<dependency>
+			<groupId>com.springcloud.sysadmin</groupId>
+			<artifactId>organization-remote</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- common -->
+		<dependency>
+			<groupId>com.springcloud</groupId>
+			<artifactId>core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- 鉴权服务实现 -->
+		<dependency>
+			<groupId>com.springcloud</groupId>
+			<artifactId>authorization-remote</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>2.5.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>1.1.1.RELEASE</version>
+		</dependency> 
+		<dependency>
+	    	<groupId>javax.xml.bind</groupId>
+	        <artifactId>jaxb-api</artifactId>
+		    </dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		
+		<!-- lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+		<dependency>
+		    <groupId>cn.hutool</groupId>
+		    <artifactId>hutool-all</artifactId>
+		    <version>5.6.6</version>
+		</dependency>
+		
+		<!-- spring cloud alibaba dependencies -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+			<version>2.2.3.RELEASE</version>
+			<type>pom</type>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-dubbo -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-dubbo</artifactId>
+			<version>2021.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-discovery -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+			<version>2021.1</version>
+		</dependency>
+		<!-- nacos-配置中心-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+			<version>2021.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-context</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

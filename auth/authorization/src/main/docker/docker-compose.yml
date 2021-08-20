@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  authorization:
+    ports:
+    image: '192.168.1.98:5000/authorization:latest'
+    env_file:
+      - server.env
+    environment:
+      TZ: Asia/Shanghai
+    entrypoint: "java -jar -Xmx512m /root/app.jar"
